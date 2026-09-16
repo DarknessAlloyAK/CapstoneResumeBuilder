@@ -1,12 +1,28 @@
+
+// Imports
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import UserContextProvider from './functions/context/userContext';
+import { createStackNavigator } from '@react-navigation/stack';
 
+// Navigation Stack
+const Stack = createStackNavigator()
+
+// Screens
+import LoginScreen from './screens/accountscreens/login';
+import RegisterScreen from './screens/accountscreens/register';
+import MainScreen from './screens/main';
+
+// Functionality
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <UserContextProvider>
+      <Stack.Navigator>
+        <Stack.Screen name="login" component={<LoginScreen/>}/>
+        <Stack.Screen name="register" component={<RegisterScreen/>}/>
+        <Stack.Screen name="main" component={<MainScreen/>}/>
+      </Stack.Navigator>
+    </UserContextProvider>
   );
 }
 
