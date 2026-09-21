@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import UserContextProvider from './functions/context/userContext';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { NavigationContainer } from '@react-navigation/native'
 // Navigation Stack
 const Stack = createStackNavigator()
 
@@ -17,11 +17,14 @@ import MainScreen from './screens/main';
 export default function App() {
   return (
     <UserContextProvider>
-      <Stack.Navigator>
-        <Stack.Screen name="login" component={<LoginScreen/>}/>
-        <Stack.Screen name="register" component={<RegisterScreen/>}/>
-        <Stack.Screen name="main" component={<MainScreen/>}/>
-      </Stack.Navigator>
+      
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="login" component={LoginScreen} />
+          <Stack.Screen name="register" component={RegisterScreen} />
+          <Stack.Screen name="main" component={MainScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </UserContextProvider>
   );
 }

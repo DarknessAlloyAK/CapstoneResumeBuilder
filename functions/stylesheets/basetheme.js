@@ -1,0 +1,5 @@
+import { StyleSheet } from "react-native/types_generated/index";
+
+export default StyleSheet({
+    
+})
