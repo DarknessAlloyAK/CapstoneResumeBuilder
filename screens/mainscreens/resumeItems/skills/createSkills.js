@@ -17,7 +17,7 @@ export default function CreateSkillsScreen() {
 
     // Additional Possibilities, Add Removing Skill Items
 
-    const {resumeItems, setDataInfo} = useContext(userContext)
+    const {resumeItems, setDataInfo, updateDatabase} = useContext(userContext)
 
     function keySetData(key, data) {
         setDataInfo((prev) => ({...prev, [key]: data}))
@@ -44,11 +44,14 @@ export default function CreateSkillsScreen() {
                 // User Context Updater,
                 console.log(resumeItems, 1, finalresult)
                 if (resumeItems.skills.length == 0) {
-                    keySetData('skills', [finalresult])
+                    const updatedSkills = [finalresult];
+                    keySetData('skills', updatedSkills)
                     console.log(resumeItems, resumeItems.skills, 2)
+                    await updateDatabase({path: 'Data/skills', data: updatedSkills})
                 } else {
-                    keySetData('skills', [...resumeItems.skills, finalresult])
-                    console.log(resumeItems.skills, 3)
+                    const updatedSkills = [...resumeItems.skills, finalresult];
+                    keySetData('skills', updatedSkills)
+                    await updateDatabase({path: 'Data/skills', data: updatedSkills})
                 }
                 
 

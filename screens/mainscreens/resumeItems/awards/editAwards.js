@@ -17,12 +17,13 @@ export default function EditAwardsScreen({ route }) {
 
     // Additional Possibilities, Add Removing Skill Items
 
-    const {setDataInfo} = useContext(userContext)
+    const {setDataInfo, updateDatabase} = useContext(userContext)
         const entry = route?.params ?? {}
     
         function keySetData(key, data) {
             setDataInfo((prev) => ({...prev, [key]: prev[key].map((item) => 
                 item.id === entry.id ? data : item)}))
+            
         }
 
     function navigate(location) {

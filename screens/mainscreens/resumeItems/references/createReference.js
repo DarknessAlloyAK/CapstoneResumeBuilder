@@ -17,7 +17,7 @@ export default function CreateReferenceScreen() {
 
     // Additional Possibilities, Add Removing Skill Items
 
-    const {resumeItems, setDataInfo} = useContext(userContext)
+    const {resumeItems, setDataInfo, updateDatabase} = useContext(userContext)
 
     function keySetData(key, data) {
         setDataInfo((prev) => ({...prev, [key]: data}))
@@ -38,7 +38,7 @@ export default function CreateReferenceScreen() {
     // Checks
     const validFirstName = firstName.length > 0
     const validLastName = lastName.length > 0
-    const validPhoneNumber = phoneNumber.length > 0
+    const validPhoneNumber = phoneNumber.length == 12
     const validEmail = email.length > 0
     const validRelationship = relationship.length > 0
 
@@ -53,11 +53,13 @@ export default function CreateReferenceScreen() {
                 // User Context Updater,
                 console.log(resumeItems, 1, finalresult)
                 if (resumeItems.references.length == 0) {
-                    keySetData('references', [finalresult])
-                    console.log(resumeItems, resumeItems.references, 2)
+                    const updatedReferences = [finalresult];
+                    keySetData('references', updatedReferences)
+                    await updateDatabase({path: 'Data/references', data: updatedReferences})
                 } else {
-                    keySetData('references', [...resumeItems.references, finalresult])
-                    console.log(resumeItems.references, 3)
+                    const updatedReferences = [...resumeItems.references, finalresult];
+                    keySetData('references', updatedReferences)
+                    await updateDatabase({path: 'Data/references', data: updatedReferences})
                 }
                 
 
@@ -82,7 +84,7 @@ export default function CreateReferenceScreen() {
                     <TextInput placeholder="Last Name" onChangeText={text => setLastName(text)}/>
                 </View>
                 <View>
-                    <Text style={styles.ParagraphText}>Enter the reference's contact information</Text>
+                    <Text style={styles.ParagraphText}>Enter the reference's contact information. Format Phone: XXX-XXX-XXXX</Text>
                     <TextInput placeholder="Phone Number" onChangeText={text => setPhoneNumber(text)}/>
                     <TextInput placeholder="Email" onChangeText={text => setEmail(text)}/>
                 </View>

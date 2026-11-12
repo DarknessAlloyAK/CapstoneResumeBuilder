@@ -36,14 +36,14 @@ export default function LoginScreen() {
                         Account: {email: email, id: result.data.localId},
                         Personal: {First: '', Last: '', StrAddress: '', City: '', State: ''},
                         Data: {
-                            WorkHistory: false,
-                            Awards: false,
-                            Education: false,
-                            Skills: false,
-                            Summaries: false
+                            workHistory: false,
+                            awards: false,
+                            education: false,
+                            skills: false,
+                            references: false
                         },
-                        Resumes: false,
-                        JobListings: false
+                        resumes: false,
+                        jobListings: false
 
                     }})
 

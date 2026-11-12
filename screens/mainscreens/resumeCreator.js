@@ -24,6 +24,8 @@ export default function ResumeCreator() {
 }
 
 
+
+
 const styles = StyleSheet.create({
     background: {
         width: '100%',

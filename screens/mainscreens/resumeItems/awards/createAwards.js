@@ -46,10 +46,12 @@ export default function CreateAwardsScreen() {
                 console.log(resumeItems, 1, finalresult)
                 if (resumeItems.awards.length == 0) {
                     keySetData('awards', [finalresult])
-                    await updateDatabase({path: 'data/awards', data: resumeItems.awards})
+                    const test = await updateDatabase({path: 'Data/awards', data: [finalresult]})
+                    console.log(test, 2)
                 } else {
-                    keySetData('awards', [...resumeItems.awards, finalresult])
-                    await updateDatabase({path: 'data/awards', data: resumeItems.awards})
+                    const updatedAwards = [...resumeItems.awards, finalresult];
+                    keySetData('awards', updatedAwards)
+                    await updateDatabase({path: 'Data/awards', data: updatedAwards})
                 }
                 
 

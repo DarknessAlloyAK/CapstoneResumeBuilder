@@ -17,7 +17,7 @@ export default function CreateWorkHistoryScreen() {
 
     // Additional Possibilities, Add Removing Skill Items
 
-    const {resumeItems, setDataInfo} = useContext(userContext)
+    const {resumeItems, setDataInfo, updateDatabase} = useContext(userContext)
 
     function keySetData(key, data) {
         setDataInfo((prev) => ({...prev, [key]: data}))
@@ -33,8 +33,10 @@ export default function CreateWorkHistoryScreen() {
     const [companyName, setCompanyName] = useState("")
     const [jobTitle, setJobTitle] = useState("")
     const [location, setLocation] = useState("")
-    const [startEmploymentDate, setStartEmploymentDate] = useState("")
-    const [endEmploymentDate, setEndEmploymentDate] = useState("")
+    const [startEmploymentYear, setStartEmploymentYear] = useState("")
+    const [startEmploymentMonth, setStartEmploymentMonth] = useState("")
+    const [endEmploymentYear, setEndEmploymentYear] = useState("")
+    const [endEmploymentMonth, setEndEmploymentMonth] = useState("")
     const [learnedSkills, setLearnedSkills] = useState([])
 
     const [tempSkill, setTempSkill] = useState('')
@@ -43,8 +45,8 @@ export default function CreateWorkHistoryScreen() {
     const validCompanyName = companyName.length > 0
     const validJobTitle = jobTitle.length > 0
     const validLocation = location.length > 0
-    const validStartDate = startEmploymentDate.length >= 3 && startEmploymentDate.includes('/')
-    const validEndDate = (endEmploymentDate.length >= 3 && endEmploymentDate.includes('/')) || endEmploymentDate.length == 0
+    const validStartDate = startEmploymentMonth.length >= 3 && startEmploymentYear.length == 4
+    const validEndDate = endEmploymentMonth.length >= 3 && endEmploymentYear.length == 4
 
     const currentlyPassing = validCompanyName && validJobTitle && validLocation && validStartDate && validEndDate
     
@@ -66,17 +68,19 @@ export default function CreateWorkHistoryScreen() {
     // This is split into to major parts, Part 1 is updating the usercontext, and the other is update the user data. It is better to do both at once instead of updating one with the other
     async function UploadData() {
         // Checks if all points of data are passing
-        const finalresult = {id: Math.random(), compName: companyName, jobTitle: jobTitle, location: location, startDate: startEmploymentDate, endDate: endEmploymentDate, skills: learnedSkills}
+        const finalresult = {id: Math.random(), compName: companyName, jobTitle: jobTitle, location: location, startDate: `${startEmploymentMonth} ${startEmploymentYear}`, endDate: `${endEmploymentMonth} ${endEmploymentYear}`, skills: learnedSkills}
         if (currentlyPassing) {
             try {
                 // User Context Updater,
                 console.log(resumeItems, 1, finalresult)
                 if (resumeItems.workHistory.length == 0) {
-                    keySetData('workHistory', [finalresult])
-                    console.log(resumeItems, resumeItems.workHistory, 2)
+                    const updatedWorkHistory = [finalresult];
+                    keySetData('workHistory', updatedWorkHistory)
+                    await updateDatabase({path: 'Data/workHistory', data: updatedWorkHistory})
                 } else {
-                    keySetData('workHistory', [...resumeItems.workHistory, finalresult])
-                    console.log(resumeItems.workHistory, 3)
+                    const updatedWorkHistory = [...resumeItems.workHistory, finalresult];
+                    keySetData('workHistory', updatedWorkHistory)
+                    await updateDatabase({path: 'Data/workHistory', data: updatedWorkHistory})
                 }
                 
 
@@ -103,8 +107,10 @@ export default function CreateWorkHistoryScreen() {
                 </View>
                 <View>
                     <Text style={styles.ParagraphText}>Enter your starting and end dates for your current employeement, if you are still working their, set end to "Now".</Text>
-                    <TextInput placeholder="Beginning of Employeement" onChangeText={text => setStartEmploymentDate(text)}/>
-                    <TextInput placeholder="End of Employeement" onChangeText={text => setEndEmploymentDate(text)}/>
+                    <TextInput placeholder="Beginning year of employment" onChangeText={text => setStartEmploymentYear(text)}/>
+                    <TextInput placeholder="Beginning month of employment" onChangeText={text => setStartEmploymentMonth(text)}/>
+                    <TextInput placeholder="End year of employment" onChangeText={text => setEndEmploymentYear(text)}/>
+                    <TextInput placeholder="End month of employment" onChangeText={text => setEndEmploymentMonth(text)}/>
                 </View>
                 <View>
                     <Text style={styles.ParagraphText}>Put 1-2 specific things you learned from this job.</Text>

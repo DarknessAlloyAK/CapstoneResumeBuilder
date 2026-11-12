@@ -17,7 +17,7 @@ export default function CreateEducationScreen() {
 
     // Additional Possibilities, Add Removing Skill Items
 
-    const {resumeItems, setDataInfo} = useContext(userContext)
+    const {resumeItems, setDataInfo, updateDatabase} = useContext(userContext)
 
     function keySetData(key, data) {
         setDataInfo((prev) => ({...prev, [key]: data}))
@@ -35,6 +35,7 @@ export default function CreateEducationScreen() {
     const [state, setState] = useState("")
     const [city, setCity] = useState("")
     const [endSchoolDate, setEndSchoolDate] = useState("")
+    const [courses, setCourses] = useState([])
 
 
     // Checks
@@ -53,13 +54,14 @@ export default function CreateEducationScreen() {
         if (currentlyPassing) {
             try {
                 // User Context Updater,
-                console.log(resumeItems, 1, finalresult)
                 if (resumeItems.education.length == 0) {
-                    keySetData('education', [finalresult])
-                    console.log(resumeItems, resumeItems.education, 2)
+                    const updatedEducation = [finalresult];
+                    keySetData('education', updatedEducation)
+                    await updateDatabase({path: 'Data/education', data: updatedEducation})
                 } else {
-                    keySetData('education', [...resumeItems.education, finalresult])
-                    console.log(resumeItems.education, 3)
+                    const updatedEducation = [...resumeItems.education, finalresult];
+                    keySetData('education', updatedEducation)
+                    await updateDatabase({path: 'Data/education', data: updatedEducation})
                 }
                 
 

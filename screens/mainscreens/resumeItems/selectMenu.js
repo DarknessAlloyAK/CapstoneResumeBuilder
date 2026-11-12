@@ -11,7 +11,7 @@ import SkillsDisplay from "../../../assets/components/resumeItems/skills";
 
 export default function SelectMenu() {
     
-    const {resumeItems, setDataInfo} = useContext(userContext)
+    const {resumeItems, setDataInfo, updateDatabase} = useContext(userContext)
 
     const [selectedMenu, setSelectedMenu] = useState("workHistory")
 
@@ -24,6 +24,8 @@ export default function SelectMenu() {
 
     function deleteItem(key, id) {
         setDataInfo((prev) => ({...prev, [key]: prev[key].filter((item) => item.id !== id)}))
+        const temp = resumeItems[key].filter((item) => item.id !== id)
+        updateDatabase({path: `Data/${key}`, data: temp})
     }
 
     function changeMenu(menu) {

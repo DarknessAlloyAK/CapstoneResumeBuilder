@@ -18,7 +18,7 @@ export async function GetAccountInfo(email) {
     const { data } = await axios.get(`${baseURL}.json`)
 
     for (const key in data) {
-        if (data[key].accountData.Email == email) {
+        if (data[key].Account.email == email) {
             return data[key]
         } else {
             return null
@@ -31,7 +31,7 @@ export async function UpdateAccountInfo(id, path, newinfo) {
     if (!id || !path || newinfo === undefined) {
         throw new Error("UpdateAccountInfo requires id, path, and newinfo")
     }
-    console.log("Testing")
+    console.log("Testing", newinfo)
     return axios.put(
         `${baseURL}/${id}/${path}.json`,
         newinfo

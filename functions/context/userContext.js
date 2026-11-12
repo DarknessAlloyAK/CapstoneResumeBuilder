@@ -62,13 +62,15 @@ function UserContextProvider({ children }) {
         throw new Error("setUpContext requires id and email")
       }
       const dataResult = await GetAccountInfo(email)
+      console.log(dataResult, 1)
       if (dataResult) {
         changeAInfo(dataResult.Account)
         changePInfo(dataResult.Personal)
         
         for (const key in dataResult.Data) {
-          if (key == false) {
-            changeData((prev) => ({...prev, [key]: {}}))
+          console.log(key, dataResult.Data[key])
+          if (dataResult.Data[key] == false) {
+            changeData((prev) => ({...prev, [key.toLowerCase()]: {}}))
           } else {
             changeData((prev) => ({...prev, [key]: dataResult.Data[key]}))
           }

@@ -13,7 +13,7 @@ import { GetAccountInfo } from "../../functions/imports/dataManager";
 
 export default function LoginScreen() {
     const check = useContext(userContext)
-    const {accountInfo, setAccountInfo, setUpContext} = useContext(userContext)
+    const {accountInfo, setAccountInfo, setPersonalInfo, setDataInfo, setResumes, setJobListings} = useContext(userContext)
 
     const updateAccountInfo = (authInfo) => {
         setAccountInfo((prev) => ({
@@ -36,9 +36,44 @@ export default function LoginScreen() {
     navigation.navigate(location)
     }
 
+
     if (accountInfo.email && accountInfo.id) {
         navigate('main')
     }
+
+    async function setUpContext(id, email) {
+          if (!id || !email) {
+            throw new Error("setUpContext requires id and email")
+          }
+          const dataResult = await GetAccountInfo(email)
+          console.log(dataResult, 1)
+          if (dataResult) {
+            setAccountInfo(dataResult.Account)
+            setPersonalInfo(dataResult.Personal)
+            
+            for (const key in dataResult.Data) {
+              console.log(key, dataResult.Data[key])
+              if (dataResult.Data[key] == false) {
+                setDataInfo((prev) => ({...prev, [key]: []}))
+              } else {
+
+                setDataInfo((prev) => ({...prev, [key]: dataResult.Data[key]}))
+              }
+            }
+    
+            if (dataResult.Resumes == false) {
+              setResumes({})
+            } else {
+              setResumes(dataResult.Resumes)
+            }
+    
+            if (dataResult.JobListings == false) {
+              setJobListings({})
+            } else {
+              setJobListings(dataResult.JobListings)
+            }
+          }
+        }
 
     async function submitLogin() {
         console.log(isValidEmail, isValidPassword)
@@ -52,6 +87,7 @@ export default function LoginScreen() {
                     
                     // fetch or create new data
                     const appl = await setUpContext(result.data.localId, email)
+                    console.log(check, 1)
                     navigate('main')
                 }
             } catch (error) {
