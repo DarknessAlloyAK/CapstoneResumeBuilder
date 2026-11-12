@@ -1,22 +1,79 @@
 import React from "react";
-import { View, Text, Pressable, TextInput, StyleSheet } from "react-native";
+import { View, Text, Pressable, TextInput, StyleSheet, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+import { Register } from "../../functions/imports/accountManager";
+import { CreateAccountInfo } from "../../functions/imports/dataManager";
+
+// Chat, WE are downscaling EVERYBODY to Civilian Level :)
+
+
+
 
 
 export default function LoginScreen() {
+    const navigator = useNavigation()
+    function navigate(location) {
+    navigator.navigate(location)}
+
+    const [password, setPassword] = useState("")
+    const [comPassword, setComPassword] = useState("")
+    const [email, setEmail] = useState("")
+    const [comEmail, setComEmail] = useState("")
+
+    const isValidPassword = password.length >= 6
+    const isValidEmail = email.includes("@")
+    const isComPassword = password == comPassword
+    const isComEmail = email == comEmail
+
+    async function submitRegistering() {
+        console.log(isComEmail, isComPassword, isValidEmail, isValidPassword)
+        if (isValidEmail && isValidPassword && isComPassword && isComEmail) {
+            try {
+                const result = await Register(password, email)
+                if (result.data.localId && result.data.idToken) {
+                    await CreateAccountInfo({location: result.data.localId, idToken: result.data.idToken, data: {
+                        Account: {email: email, id: result.data.localId},
+                        Personal: {First: '', Last: '', StrAddress: '', City: '', State: ''},
+                        Data: {
+                            WorkHistory: false,
+                            Awards: false,
+                            Education: false,
+                            Skills: false,
+                            Summaries: false
+                        },
+                        Resumes: false,
+                        JobListings: false
+
+                    }})
+
+                    navigate("login")
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        } else {
+            // Get error message
+        }
+    }
+    
     return (
     <View style={styles.background}>
         <View style={styles.mainContainer}>
             <Text style={styles.title}>Resume Builder</Text>
+            <Text style={styles.subtitle}>Register</Text>
             <View style={styles.inputField}>
-                <TextInput style={styles.input} placeholder="email@gmail.com"></TextInput>
-                <TextInput style={styles.input} placeholder="password"></TextInput>
+                <TextInput style={styles.input} placeholder="email@gmail.com" onChangeText={(text) => {setEmail(text)}}></TextInput>
+                <TextInput style={styles.input} placeholder="Confirm email@gmail.com" onChangeText={(text) => {setComEmail(text)}}></TextInput>
+                <TextInput style={styles.input} placeholder="password" onChangeText={(text) => {setPassword(text)}}></TextInput>
+                <TextInput style={styles.input} placeholder="Confirm password" onChangeText={(text) => {setComPassword(text)}}></TextInput>
             </View>
             <View style={styles.buttonsContainer}>
                 <Pressable style={styles.buttons}>
-                    <Text style={styles.buttonText}>Log in</Text>
+                    <Text style={styles.buttonText} onPress={() => submitRegistering()}>Register</Text>
                 </Pressable>
-                <Pressable style={styles.buttons}>
-                    <Text style={styles.buttonText}>Register</Text>
+                <Pressable style={styles.buttons} onPress={() => navigate('login')}>
+                    <Text style={styles.buttonText}>Log In</Text>
                 </Pressable>
             </View>
         </View>
@@ -36,7 +93,16 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#ffffff'
     },
-    subtitle: {},
+    backgroundImage: {
+        width: '100%',
+        height: '100%',
+        opacity: '50%'
+    },
+    subtitle: {
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#bdbdbd'},
     mainText: {},
     buttonText: {
         fontSize: '15',
@@ -56,8 +122,8 @@ const styles = StyleSheet.create({
         width: '50%',
         marginHorizontal: 'auto',
         backgroundColor: '#f4bfdb',
-        height: '20%',
-        marginTop: '15%',
+        height: '40%',
+        marginTop: '5%',
         justifyContent: 'center',
         borderRadius: 20
     },

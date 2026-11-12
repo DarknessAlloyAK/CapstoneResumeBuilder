@@ -1,0 +1,8 @@
+Stylesheets:
+These are for two types of backgrounds, a light and dark mode.
+As I am a sane and kind person, people will start with the dark mode so the freaks can have light mode
+
+Context:
+Handles usercontext, and that is it.
+
+Imports: 

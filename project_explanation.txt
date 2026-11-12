@@ -1,3 +1,1 @@
 Project: Resume Builder
-
-This project is meant to be an easy way for people to create documents
