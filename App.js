@@ -12,6 +12,7 @@ const Stack = createStackNavigator()
 import LoginScreen from './screens/accountscreens/login';
 import RegisterScreen from './screens/accountscreens/register';
 import MainScreen from './screens/main';
+import PersonalInfoScreen from './screens/accountscreens/personalInfo';
 
 // Functionality
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="login" component={LoginScreen} />
+          <Stack.Screen name="personalInfo" component={PersonalInfoScreen}/>
           <Stack.Screen name="register" component={RegisterScreen} />
           <Stack.Screen name="main" component={MainScreen} />
         </Stack.Navigator>

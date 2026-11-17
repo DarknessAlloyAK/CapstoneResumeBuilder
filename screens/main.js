@@ -7,15 +7,35 @@ import MainDockScreen from "./mainscreens/maindock";
 import JobListingCreator from "./mainscreens/jobListingCreator";
 import ResumeCreator from "./mainscreens/resumeCreator";
 import ResumeItemsView from "./mainscreens/resumeItems";
+import CreateResumeScreen from "./mainscreens/resumeCreator/createresume";
+import EditResumeScreen from "./mainscreens/resumeCreator/editresume";
 
 const Drawer = createDrawerNavigator()
 
 export default function MainScreen() {
     return (
-        <Drawer.Navigator>
-            <Drawer.Screen name={'Dock'} component={MainDockScreen}/>
-            <Drawer.Screen name={'Job Listings'} component={JobListingCreator}/>
+        <Drawer.Navigator 
+        screenOptions={{
+        drawerType: 'permanent',
+        headerShown: false,
+        drawerStyle: {
+            width: 200,
+            backgroundColor: '#101321'
+        },
+        drawerActiveTintColor: '#e91e63',      // Text & icon color for active item
+        drawerInactiveTintColor: '#333333',    // Text & icon color for inactive items
+        drawerLabelStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+        drawerItemStyle: {
+            borderRadius: 0
+        }
+        }}>
             <Drawer.Screen name={'Resumes'} component={ResumeCreator}/>
+            <Drawer.Screen name={'Job Listings'} component={JobListingCreator}/>
             <Drawer.Screen name={'Items'} component={ResumeItemsView}/>
+            <Drawer.Screen name={'createresume'} component={CreateResumeScreen} options={{ drawerItemStyle: {display: 'none'}, title: 'Create Resume' }}     />
+            <Drawer.Screen name={'editresume'} component={EditResumeScreen} options={{ drawerItemStyle: {display: 'none'}, title: 'Edit Resume' }} />
         </Drawer.Navigator>)
 }

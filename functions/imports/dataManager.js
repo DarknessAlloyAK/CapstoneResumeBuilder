@@ -16,14 +16,11 @@ export async function CreateAccountInfo(upload) {
 
 export async function GetAccountInfo(email) {
     const { data } = await axios.get(`${baseURL}.json`)
+    const normalizedEmail = email?.trim().toLowerCase()
 
-    for (const key in data) {
-        if (data[key].Account.email == email) {
-            return data[key]
-        } else {
-            return null
-        }
-    }
+    return Object.values(data ?? {}).find((account) =>
+        account?.Account?.email?.trim().toLowerCase() === normalizedEmail
+    ) ?? null
 }
 
 

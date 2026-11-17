@@ -33,9 +33,7 @@ function UserContextProvider({ children }) {
       firstName: '',
       lastName: '',
       phoneNumber: '',
-      strAddress: '',
-      city: '',
-      state: ''
+      linkedin: ''
     })
     const [data, changeData] = useState({
       workHistory: [],
@@ -44,8 +42,8 @@ function UserContextProvider({ children }) {
       awards: [],
       references: []
     })
-    const [resumes, setResumes] = useState({})
-    const [jobListings, setJobListings] = useState({})
+    const [resumes, setResumes] = useState([])
+    const [jobListings, setJobListings] = useState([])
 
     // Functions
 
@@ -77,13 +75,13 @@ function UserContextProvider({ children }) {
         }
 
         if (dataResult.Resumes == false) {
-          setResumes({})
+          setResumes([])
         } else {
           setResumes(dataResult.Resumes)
         }
 
         if (dataResult.JobListings == false) {
-          setJobListings({})
+          setJobListings([])
         } else {
           setJobListings(dataResult.JobListings)
         }

@@ -3,15 +3,55 @@ import { View, Flatlist, Text, Pressable, StyleSheet, useState } from "react-nat
 
 export default function ReferencesDisplay(Imports) {
     return (
-    <View>
-        <Text>{Imports.Name}</Text>
-        <Text>{Imports.Relationship}</Text>
-        <Text>{Imports.PhoneNumber}</Text>
-        <Text>{Imports.Email}</Text>
+    <View style={styles.background}>
         <View>
-            <Pressable onPress={() => Imports.onSelect(Imports)}>
-                <Text>Select</Text>
+            <Text style={styles.CompanyText}>{Imports.firstName} {Imports.lastName}</Text>
+            <Text style={styles.SubtitleText}>{Imports.relationship} | {Imports.Position}</Text>
+        </View>
+        <View>
+            <Pressable style={Imports.isSelected ? styles.RemoveButton : styles.SelectButton} onPress={() => Imports.onSelect(Imports)}>
+                <Text style={styles.ButtonText}>{Imports.isSelected ? "Remove" : "Select"}</Text>
             </Pressable>
         </View>
     </View>)
 }
+
+const styles = StyleSheet.create({
+    background: {
+        width: '100%',
+        backgroundColor: '#2c3948',
+        marginVertical: 5,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    CompanyText: {
+        fontSize: 24,
+        color: 'white',
+        fontWeight: 'bold'
+    },
+    SubtitleText: {
+        fontSize: 15,
+        color: '#c4c4c4'
+    },
+    SelectButton: {
+        backgroundColor: '#425555',
+        height: '80%',
+        width: '120%',
+        margin: 'auto'
+    },
+    ButtonText: {
+        width: '100%',
+        height: '100%',
+        color: 'white',
+        alignContent: 'center',
+        padding: 5,
+        fontWeight: 'bold'
+    },
+    RemoveButton: {
+        backgroundColor: '#4c6968',
+        height: '80%',
+        width: '120%',
+        margin: 'auto'
+    }
+})

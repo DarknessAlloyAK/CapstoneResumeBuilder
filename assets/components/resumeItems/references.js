@@ -1,15 +1,11 @@
 import React from "react";
 import { View, Flatlist, Text, Pressable, StyleSheet, useState } from "react-native";
 
-export default function ReferencesDisplay({ id, firstName, lastName, relationship, phoneNumber, email, onEdit, deleteItem }) {
+export default function ReferencesDisplay({ id, jobTitle, firstName, lastName, relationship, phoneNumber, email, onEdit, deleteItem }) {
     return (
-    <View>
-        <Text>{firstName} {lastName}</Text>
-        <Text>{relationship}</Text>
-        <View>
-            <Text>{phoneNumber}</Text>
-            <Text>{email}</Text>
-        </View>
+    <View style={styles.background}>
+        <Text style={styles.CompanyText}>{firstName} {lastName}</Text>
+        <Text style={styles.SubtitleText}>{jobTitle} | {relationship}</Text>
         <View>
             <View>
                 <Pressable style={styles.EditButton} onPress={() => onEdit(id)}>
@@ -26,14 +22,46 @@ export default function ReferencesDisplay({ id, firstName, lastName, relationshi
 }
 
 const styles = StyleSheet.create({
-    EditButton: {
-        backgroundColor: 'blue'
+    background: {
+        width: '100%',
+        backgroundColor: '#2c3948',
+        marginVertical: 5,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
-    DeleteButton: {
-        backgroundColor: 'red'
+    CompanyText: {
+        fontSize: 24,
+        color: 'white',
+        fontWeight: 'bold',
+        marginVertical:'auto'
+    },
+    SubtitleText: {
+        fontSize: 15,
+        color: '#c4c4c4',
+        marginVertical:'auto',
+        textAlign: 'center'
+    },
+    SelectButton: {
+        backgroundColor: '#425555',
+        height: '80%',
+        width: '120%',
+        margin: 'auto'
     },
     ButtonText: {
+        width: '100%',
+        height: '100%',
         color: 'white',
-        textAlign: 'center'
+        textAlign: 'center',
+        alignContent: 'center',
+        padding: 5,
+        fontWeight: 'bold'
+    },
+    RemoveButton: {
+        backgroundColor: '#4c6968',
+        height: '80%',
+        width: '120%',
+        margin: 'auto'
     }
 })
+

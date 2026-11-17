@@ -72,17 +72,17 @@ export default function EditEducationScreen({ route }) {
             <View style={styles.section}>
                 <View>
                     <Text style={styles.ParagraphText}>Enter your school name and degree</Text>
-                    <TextInput value={entry.schoolName} placeholder="School Name" onChangeText={text => setSchoolName(text)}/>
-                    <TextInput value={entry.degree} placeholder="Degree" onChangeText={text => setDegree(text)}/>
+                    <TextInput value={schoolName} placeholder="School Name" onChangeText={text => setSchoolName(text)}/>
+                    <TextInput value={degree} placeholder="Degree" onChangeText={text => setDegree(text)}/>
                 </View>
                 <View>
                     <Text style={styles.ParagraphText}>Enter your school location</Text>
-                    <TextInput value={entry.state} placeholder="State" onChangeText={text => setState(text)}/>
-                    <TextInput value={entry.city} placeholder="City" onChangeText={text => setCity(text)}/>
+                    <TextInput value={state} placeholder="State" onChangeText={text => setState(text)}/>
+                    <TextInput value={city} placeholder="City" onChangeText={text => setCity(text)}/>
                 </View>
                 <View>
                     <Text style={styles.ParagraphText}>Enter your school end date</Text>
-                    <TextInput value={entry.endSchoolDate} placeholder="End of Schooling (YYYY)" onChangeText={text => setEndSchoolDate(text)}/>
+                    <TextInput value={endSchoolDate} placeholder="End of Schooling (YYYY)" onChangeText={text => setEndSchoolDate(text)}/>
                 </View>
                 <View style={styles.AddButton}>
                     <Pressable onPress={() => UploadData()}>

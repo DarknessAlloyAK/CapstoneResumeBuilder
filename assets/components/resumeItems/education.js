@@ -3,12 +3,10 @@ import { View, Flatlist, Text, Pressable, StyleSheet, useState } from "react-nat
 
 export default function EducationDisplay({ id, schoolName, degree, city, state, fieldOfStudy, endSchoolDate, onEdit, deleteItem }) {
     return (
-    <View>
-        <Text>{schoolName}</Text>
-        <Text>{degree}</Text>
-        <Text>{fieldOfStudy}</Text>
-        <Text>{city} {state}</Text>
-        <Text>{endSchoolDate}</Text>
+    <View style={styles.background}>
+        <Text style={styles.CompanyText}>{schoolName}</Text>
+        <Text style={styles.SubtitleText}>{degree}</Text>
+        <Text style={styles.SubtitleText}>{city}, {state} - {endSchoolDate}</Text>
         <View>
             <View>
                 <Pressable style={styles.EditButton} onPress={() => onEdit(id)}>
@@ -25,14 +23,47 @@ export default function EducationDisplay({ id, schoolName, degree, city, state, 
 }
 
 const styles = StyleSheet.create({
-    EditButton: {
-        backgroundColor: 'blue'
+    background: {
+        width: '100%',
+        backgroundColor: '#2c3948',
+        marginVertical: 5,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
-    DeleteButton: {
-        backgroundColor: 'red'
+    CompanyText: {
+        fontSize: 24,
+        color: 'white',
+        fontWeight: 'bold',
+        marginVertical:'auto',
+        textAlign: 'center'
+    },
+    SubtitleText: {
+        fontSize: 15,
+        color: '#c4c4c4',
+        marginVertical:'auto',
+        textAlign: 'center'
+    },
+    SelectButton: {
+        backgroundColor: '#425555',
+        height: '80%',
+        width: '120%',
+        margin: 'auto'
     },
     ButtonText: {
+        width: '100%',
+        height: '100%',
         color: 'white',
-        textAlign: 'center'
+        textAlign: 'center',
+        alignContent: 'center',
+        padding: 5,
+        fontWeight: 'bold'
+    },
+    RemoveButton: {
+        backgroundColor: '#4c6968',
+        height: '80%',
+        width: '120%',
+        margin: 'auto'
     }
 })
+

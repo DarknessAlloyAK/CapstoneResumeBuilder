@@ -31,10 +31,10 @@ export default function SelectMenu() {
     function changeMenu(menu) {
 
         if (menu == "workHistory") {
-            return (<View>
+            return (<View style={styles.menuContent}>
                 <Text style={styles.sectionHeader}>Work History</Text>
-                <View>
-                    <FlatList
+                <View style={styles.MainFlatList}>
+                    <FlatList style={styles.Thing}
                         data={resumeItems.workHistory}
                         keyExtractor={item => String(item.id)}
                         renderItem={({ item }) => (
@@ -52,10 +52,10 @@ export default function SelectMenu() {
             </View>)
             
         } else if (menu == "education") {
-            return (<View>
+            return (<View style={styles.menuContent}>
                 <Text style={styles.sectionHeader}>Education</Text>
-                <View>
-                    <FlatList
+                <View style={styles.MainFlatList}>
+                    <FlatList style={styles.Thing}
                         data={resumeItems.education}
                         keyExtractor={item => String(item.id)}
                         renderItem={({ item }) => (
@@ -72,10 +72,10 @@ export default function SelectMenu() {
                 </Pressable>
             </View>)
         } else if (menu == "awards") {
-            return (<View>
+            return (<View style={styles.menuContent}>
                 <Text style={styles.sectionHeader}>Awards</Text>
-                <View>
-                    <FlatList data={resumeItems.awards} renderItem={({ item }) => (
+                <View style={styles.MainFlatList}>
+                    <FlatList style={styles.Thing} data={resumeItems.awards} renderItem={({ item }) => (
                         <AwardsDisplay {...item} onEdit={() => navigation.navigate("editawardsview", item)} deleteItem={(id) => deleteItem("awards", id)}/>
                     )}/>
                 </View>
@@ -84,10 +84,10 @@ export default function SelectMenu() {
                 </Pressable>
             </View>)
         } else if (menu == "references") {
-            return (<View>
+            return (<View style={styles.menuContent}>
                 <Text style={styles.sectionHeader}>References</Text>
-                <View>
-                    <FlatList data={resumeItems.references} renderItem={({ item }) => (
+                <View style={styles.MainFlatList}>
+                    <FlatList style={styles.Thing} data={resumeItems.references} renderItem={({ item }) => (
                         <ReferencesDisplay {...item} onEdit={() => navigation.navigate("editreferencesview", item)} deleteItem={(id) => deleteItem("references", id)}/>
                     )}/>
                 </View>
@@ -96,10 +96,10 @@ export default function SelectMenu() {
                 </Pressable>
             </View>)
         } else if (menu == "skills") {
-            return (<View>
+            return (<View style={styles.menuContent}>
                 <Text style={styles.sectionHeader}>Skills</Text>
-                <View>
-                    <FlatList data={resumeItems.skills} renderItem={({ item }) => (
+                <View style={styles.MainFlatList}>
+                    <FlatList style={styles.Thing} data={resumeItems.skills} renderItem={({ item }) => (
                         <SkillsDisplay {...item} onEdit={() => navigation.navigate("editskillsview", item)} deleteItem={(id) => deleteItem("skills", id)}/>
                     )}/>
                 </View>
@@ -114,19 +114,19 @@ export default function SelectMenu() {
     // 
     return (<View style={styles.background}>
         <View style={styles.section}>
-            <Pressable style={styles.AddButton} onPress={() => setSelectedMenu("workHistory")}>
+            <Pressable style={styles.MenuButton} onPress={() => setSelectedMenu("workHistory")}>
                 <Text style={styles.ButtonText}>Work History</Text>
             </Pressable>
-            <Pressable style={styles.AddButton} onPress={() => setSelectedMenu("education")}>
+            <Pressable style={styles.MenuButton} onPress={() => setSelectedMenu("education")}>
                 <Text style={styles.ButtonText}>Education</Text>
             </Pressable>
-            <Pressable style={styles.AddButton} onPress={() => setSelectedMenu("awards")}>
+            <Pressable style={styles.MenuButton} onPress={() => setSelectedMenu("awards")}>
                 <Text style={styles.ButtonText}>Awards</Text>
             </Pressable>
-            <Pressable style={styles.AddButton} onPress={() => setSelectedMenu("references")}>
+            <Pressable style={styles.MenuButton} onPress={() => setSelectedMenu("references")}>
                 <Text style={styles.ButtonText}>References</Text>
             </Pressable>
-            <Pressable style={styles.AddButton} onPress={() => setSelectedMenu("skills")}>
+            <Pressable style={styles.MenuButton} onPress={() => setSelectedMenu("skills")}>
                 <Text style={styles.ButtonText}>Skills</Text>
             </Pressable>
         </View>
@@ -141,29 +141,33 @@ const styles = StyleSheet.create({
     background: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#512d38',
+        backgroundColor: '#0b0e17',
         flexDirection: 'row',
         display: 'flex',
     },
     section: {
-        width: '24%',
-        height: '97%',
-        backgroundColor: '#b27092',
-        margin: 'auto',
-        borderRadius: 15,
+        width: '15%',
+        height: '30%',
+        backgroundColor: '#1e1d2a',
+        marginLeft: '10%',
+        borderRadius: 0,
         outlineColor: '#ffffff',
         outlineStyle: 'solid',
         outlineWidth: 3
     },
     mainSection: {
-        width: '65%',
-        height: '97%',
-        backgroundColor: '#b27092',
-        margin: 'auto',
-        borderRadius: 15,
+        width: '45%',
+        height: '100%',
+        backgroundColor: '#15182a',
+        marginLeft: '',
+        borderRadius: 0,
         outlineColor: '#ffffff',
         outlineStyle: 'solid',
         outlineWidth: 3
+    },
+    menuContent: {
+        width: '100%',
+        height: '100%',
     },
     sectionHeader: {
         textAlign: 'center',
@@ -172,21 +176,43 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         color: '#ffffff',
-        marginTop: 10
+        marginTop: 10,
+        marginBottom: '5%'
     },
     AddButton: {
-        backgroundColor: '#9ab87a',
-        width: '50%',
+        backgroundColor: '#293155',
+        width: '25%',
         height: '5%',
         marginHorizontal: 'auto',
-        marginVertical: '5%',
-        borderRadius: 20
+        marginBottom: '5%',
+        borderRadius: 0
+    },
+    MenuButton: {
+        backgroundColor: '#293155',
+        width: '100%',
+        height: '18%',
+        marginVertical: '1%',
+        marginHorizontal: 'auto',
+        borderRadius: 0
     },
     ButtonText: {
         textAlign: 'center',
+        alignContent: 'center',
         width: '100%',
         height: '100%',
-        fontSize: 20,
+        fontSize: 15,
         color: 'white'
+    },
+    MainFlatList: {
+        width: '95%',
+        height: '65%',
+        borderWidth: 3,
+        borderColor: '#0f111e',
+        margin: 'auto',
+        backgroundColor: '#181d32'
+    },
+    Thing: {
+        width: '100%',
+        height: '100%'
     }
 })

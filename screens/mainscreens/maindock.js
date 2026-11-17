@@ -9,3 +9,4 @@ export default function MainDockScreen() {
         <Button title="Generate Document" onPress={() => GenerateDocument()} />
     </View>)
 }
+

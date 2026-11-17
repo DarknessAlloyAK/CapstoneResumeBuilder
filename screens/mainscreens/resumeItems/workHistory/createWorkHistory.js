@@ -53,7 +53,7 @@ export default function CreateWorkHistoryScreen() {
     const validSkill = tempSkill.length > 0
 
     function AddSkill() {
-        console.log(tempSkill, learnedSkills)
+        setTempSkill('')
         if (validSkill) {
             if (learnedSkills.length == 0) {
                 setLearnedSkills([tempSkill]);
@@ -63,6 +63,10 @@ export default function CreateWorkHistoryScreen() {
            
         }
         
+    }
+
+    function removeSkillAt(indexToRemove) {
+        setLearnedSkills((previous) => previous.filter((_, index) => index !== indexToRemove))
     }
 
     // This is split into to major parts, Part 1 is updating the usercontext, and the other is update the user data. It is better to do both at once instead of updating one with the other
@@ -98,38 +102,58 @@ export default function CreateWorkHistoryScreen() {
 
     return (
         <View style={styles.background}>
-            <View style={styles.section}>
+            <View style={styles.mainSection}>
                 <View>
-                    <Text style={styles.ParagraphText}>Put the company Name, Location, and your Job Title</Text>
-                    <TextInput placeholder="Company Name" onChangeText={text => setCompanyName(text)}/>
-                    <TextInput placeholder="Job Title" onChangeText={text => setJobTitle(text)}/>
-                    <TextInput placeholder="Location" onChangeText={text => setLocation(text)}/>
+                    <Text style={styles.title}>Create New History</Text>
+                    <View style={styles.NameInputHolder}>
+                        <Text style={styles.NameLabels}>Company</Text>
+                        <Text style={styles.NameLabels}>Job Title</Text>
+                    </View>
+                    <View style= {styles.NameInputHolder}>
+                        <TextInput style={styles.input} value={companyName} onChangeText={text => setCompanyName(text)} />
+                        <TextInput style={styles.input} value={jobTitle} onChangeText={text => setJobTitle(text)} />
+                    </View>
+                    <Text style={styles.OtherLabels}>Location: City, ST</Text>
+                    <TextInput style={styles.input} onChangeText={text => setLocation(text)}/>
                 </View>
                 <View>
-                    <Text style={styles.ParagraphText}>Enter your starting and end dates for your current employeement, if you are still working their, set end to "Now".</Text>
-                    <TextInput placeholder="Beginning year of employment" onChangeText={text => setStartEmploymentYear(text)}/>
-                    <TextInput placeholder="Beginning month of employment" onChangeText={text => setStartEmploymentMonth(text)}/>
-                    <TextInput placeholder="End year of employment" onChangeText={text => setEndEmploymentYear(text)}/>
-                    <TextInput placeholder="End month of employment" onChangeText={text => setEndEmploymentMonth(text)}/>
+                    <View style={styles.NameInputHolder}>
+                        <Text style={styles.NameLabels}>Start Year of Employeement: YYYY</Text>
+                        <Text style={styles.NameLabels}>Start Month of Employeement</Text>
+                    </View>
+                    <View style={styles.NameInputHolder}>
+                        <TextInput style={styles.input} placeholder="YYYY" onChangeText={text => setStartEmploymentYear(text)}/>
+                        <TextInput style={styles.input} placeholder="Full Month" onChangeText={text => setStartEmploymentMonth(text)}/>
+                    </View>
+                    <View style={styles.NameInputHolder}>
+                        <Text style={styles.NameLabels}>End Year of Employeement: YYYY</Text>
+                        <Text style={styles.NameLabels}>End Month of Employeement</Text>
+                    </View>
+                    <View style={styles.NameInputHolder}>
+                        <TextInput style={styles.input} placeholder="YYYY" onChangeText={text => setEndEmploymentYear(text)}/>
+                        <TextInput style={styles.input} placeholder="Full Month" onChangeText={text => setEndEmploymentMonth(text)}/>
+                    </View>
                 </View>
                 <View>
-                    <Text style={styles.ParagraphText}>Put 1-2 specific things you learned from this job.</Text>
-                    <TextInput placeholder="Learned Skills" onChangeText={text => setTempSkill(text)}/>
-                    <FlatList data={learnedSkills} renderItem={({item}) => <Text>{item}</Text>} keyExtractor={(item) => item}/>
-
-
-                    <View style={styles.AddButton}>
-                        <Pressable onPress={() => AddSkill()}>
+                    <Text style={styles.ListLabels}>Put 1-2 specific things you skills you gained from this job.</Text>
+                    <TextInput value={tempSkill} placeholder="Type Skill Here" style={styles.input} onChangeText={text => setTempSkill(text)}/>
+                        <Pressable onPress={() => AddSkill()} style={styles.AddButton}>
                             <Text style={styles.ButtonText}>Add Skill</Text>
                         </Pressable>
+                    <View style={styles.MainFlatList}>
+                        <FlatList style={styles.SkillsFlatList} data={learnedSkills} keyExtractor={(_, index) => String(index)} renderItem={({item, index}) => 
+                        <View style={styles.NameInputHolder}>
+                            <Text style={styles.displayText}>{item}</Text>
+                            <Pressable style={styles.DeleteSkillButton} accessibilityRole="button" accessibilityLabel={`Remove ${item}`} onPress={() => removeSkillAt(index)}>
+                                <Text style={styles.ButtonText}>Remove</Text>
+                            </Pressable>
+                        </View>} 
+                        />
                     </View>
-                    
                 </View>
-                <View style={styles.AddButton}>
-                    <Pressable onPress={() => UploadData()}>
-                        <Text style={styles.ButtonText}>Create</Text>
-                    </Pressable>
-                </View>
+                <Pressable onPress={() => UploadData()} style={styles.MenuButton}>
+                    <Text style={styles.ButtonText}>Create</Text>
+                </Pressable>
 
             </View>
         </View>
@@ -140,19 +164,87 @@ const styles = StyleSheet.create({
     background: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#512d38',
+        backgroundColor: '#0b0e17',
         flexDirection: 'row',
         display: 'flex',
     },
+    displayText:{
+        color: 'white'
+    },
+    NameInputHolder: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '90%',
+        marginHorizontal: 'auto',
+        justifyContent: 'space-between'
+    },
+    NameLabels: {
+        textAlign: 'left',
+        fontSize: 15,
+        color: '#ffffff',
+        width: '50%',
+        marginTop: '2%',
+        marginBottom: '-1%',
+    },
+    OtherLabels: {
+        textAlign: 'left',
+        fontSize: 15,
+        color: '#ffffff',
+        width: '50%',
+        marginTop: '2%',
+        marginBottom: '-1%',
+        marginHorizontal: '5%'
+    },
+    DateHolder: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        height: 30
+    },
+    input: {
+        marginHorizontal: 'auto',
+        width: '90%',
+        height: 30,
+        backgroundColor: '#ffffff',
+        padding: 10,
+        marginVertical: '2%',
+        outlineWidth: 3,
+        outlineStyle: 'solid',
+        outlineColor: '#101321',
+        borderRadius: 1
+    },
+    ListLabels: {
+        textAlign: 'left',
+        fontSize: 15,
+        color: '#ffffff',
+        width: '80%',
+        marginTop: '2%',
+        marginBottom: '2%',
+        marginHorizontal: '5%'
+    },
     section: {
-        width: '24%',
-        height: '97%',
-        backgroundColor: '#b27092',
-        margin: 'auto',
-        borderRadius: 15,
+        width: '15%',
+        height: '30%',
+        backgroundColor: '#1e1d2a',
+        marginLeft: '50%',
+        borderRadius: 0,
         outlineColor: '#ffffff',
         outlineStyle: 'solid',
         outlineWidth: 3
+    },
+    mainSection: {
+        width: '45%',
+        height: '100%',
+        backgroundColor: '#15182a',
+        marginLeft: '27.5%',
+        borderRadius: 0,
+        outlineColor: '#ffffff',
+        outlineStyle: 'solid',
+        outlineWidth: 3
+    },
+    menuContent: {
+        width: '100%',
+        height: '100%',
     },
     sectionHeader: {
         textAlign: 'center',
@@ -161,28 +253,55 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         color: '#ffffff',
-        marginTop: 10
+        marginTop: 10,
+        marginBottom: '5%'
     },
     AddButton: {
-        backgroundColor: '#9ab87a',
-        width: '50%',
-        height: '5%',
+        backgroundColor: '#293155',
+        width: 100,
+        height: 30,
         marginHorizontal: 'auto',
-        marginVertical: '5%',
-        borderRadius: 20
+        borderRadius: 0
+    },
+    ParagraphText: {
+        fontSize: 18,
+        color: 'white'
+    },
+    MenuButton: {
+        backgroundColor: '#293155',
+        width: 100,
+        height: 30,
+        marginVertical: '1%',
+        marginHorizontal: 'auto',
+        borderRadius: 0
     },
     ButtonText: {
         textAlign: 'center',
-        width: '100%',
-        height: '100%',
-        fontSize: 20,
-        color: 'white'
-    },
-    ParagraphText: {
-        textAlign: 'center',
+        alignContent: 'center',
         width: '100%',
         height: '100%',
         fontSize: 15,
-        color: '#d4d2d2'
-    }
+        color: 'white'
+    },
+    MainFlatList: {
+        width: '95%',
+        height: '35%',
+        borderWidth: 3,
+        borderColor: '#0f111e',
+        margin: 'auto',
+        marginBottom: '5%',
+        backgroundColor: '#181d32'
+    },
+    Thing: {
+        width: '100%',
+        height: '100%'
+    },
+    title: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: 'white',
+        textAlign: 'center',
+        marginTop: '5%',
+        marginBottom: '2%'
+    },
 })
