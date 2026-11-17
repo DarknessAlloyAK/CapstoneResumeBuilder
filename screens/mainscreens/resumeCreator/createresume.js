@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, FlatList, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {userContext} from "../../../functions/context/userContext"
@@ -120,6 +120,32 @@ export default function CreateResumeScreen() {
         ? previous.filter((item) => item.id !== data.id)
         : [...previous, data])
     }
+    function updateAwards(data) {
+        setAwards((previous) => previous.some((item) => item.id === data.id)
+        ? previous.filter((item) => item.id !== data.id)
+        : [...previous, data])
+    }
+
+    useEffect(() => {
+            const unsubscribe = navigation.addListener('blur', () => {
+                setPage(0);
+                setJobTitle('');
+                setCompany('');
+                setFirstName(personalInfo.firstName ?? '');
+                setLastName(personalInfo.lastName ?? '');
+                setLinkedin(personalInfo.linkedin ?? '');
+                setPhoneNumber(personalInfo.phoneNumber ?? '');
+                setHistory([]);
+                setEducation([]);
+                setSkills([]);
+                setAwards([]);
+                setReferences([]);
+                setSummary('');
+            });
+    
+      return unsubscribe;
+    }, [navigation, personalInfo]);
+    
 
     async function UploadData() {
         const finalresult = {details: {
@@ -244,7 +270,7 @@ export default function CreateResumeScreen() {
             <Text style={styles.ListLabels}>{`(Optional)`} Add a few awards to spice it up</Text>
             <View style={styles.MainFlatList}>
                 <FlatList data={resumeItems.awards} keyExtractor={(item) => (String(item.id))} renderItem={({item}) => (
-                        <AwardsDisplay {...item} isSelected={references.some((selected) => selected.id === item.id)} onSelect={updateReferences}/> 
+                        <AwardsDisplay {...item} isSelected={awards.some((selected) => selected.id === item.id)} onSelect={updateAwards}/> 
                 )}/>
             </View>
         </View> 

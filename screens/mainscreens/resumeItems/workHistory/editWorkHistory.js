@@ -133,6 +133,12 @@ export default function EditWorkHistoryScreen({ route }) {
                 <Pressable onPress={UploadData} style={styles.MenuButton}>
                     <Text style={styles.ButtonText}>Change</Text>
                 </Pressable>
+                <Text style={styles.NameLabels}></Text>
+                <View style={styles.AddButton}>
+                    <Pressable onPress={() => navigation.goBack()}>
+                        <Text style={styles.ButtonText}>Go Back</Text>
+                    </Pressable>
+                </View>
             </View>
         </View>
     )
@@ -220,7 +226,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#293155',
         width: 100,
         height: 30,
-        marginVertical: '1%',
+        marginTop: '4%',
         marginHorizontal: 'auto',
         borderRadius: 0
     },

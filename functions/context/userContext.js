@@ -14,7 +14,8 @@ export const userContext = createContext({
   setDataInfo: (info) => {},
   setResumes: (info) => {},
   setJobListings: (info) => {},
-  setUpContext: (info) => {}
+  setUpContext: (info) => {},
+  logout: () => {}
 })
 
 function setValue(Value) {
@@ -88,6 +89,14 @@ function UserContextProvider({ children }) {
       }
     }
 
+    function logout() {
+      changeAInfo({email: '', id: '', idToken: ''})
+      changePInfo({firstName: '', lastName: '', phoneNumber: '', linkedin: ''})
+      changeData({workHistory: [], education: [], skills: [], awards: [], references: []})
+      setResumes([])
+      setJobListings([])
+    }
+
     const values = {
         accountInfo: accountInfo,
         personalInfo: personalInfo,
@@ -100,7 +109,8 @@ function UserContextProvider({ children }) {
         setResumes: setResumes,
         setJobListings: setJobListings,
         updateDatabase: updateDatabase,
-        setUpContext: setUpContext
+        setUpContext: setUpContext,
+        logout: logout
     }
 
     

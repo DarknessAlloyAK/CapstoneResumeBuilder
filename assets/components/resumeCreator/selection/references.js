@@ -6,7 +6,7 @@ export default function ReferencesDisplay(Imports) {
     <View style={styles.background}>
         <View>
             <Text style={styles.CompanyText}>{Imports.firstName} {Imports.lastName}</Text>
-            <Text style={styles.SubtitleText}>{Imports.relationship} | {Imports.Position}</Text>
+            <Text style={styles.SubtitleText}>{Imports.relationship} | {Imports.jobTitle}</Text>
         </View>
         <View>
             <Pressable style={Imports.isSelected ? styles.RemoveButton : styles.SelectButton} onPress={() => Imports.onSelect(Imports)}>

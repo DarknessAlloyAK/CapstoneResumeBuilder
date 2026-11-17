@@ -309,7 +309,7 @@ export default function GenerateDocument(data) {
       children: [new TextRun({ text: String(skill), font: 'Times New Roman', size: 20 })],
     }));
 
-    return [roleTable, ...skillParagraphs];
+    return [roleTable, ...skillParagraphs, blankLine()];
   });
 
   /// //// ///// SKILLS ///// //// ///
@@ -369,6 +369,118 @@ export default function GenerateDocument(data) {
     rows: skillRows
   })
 
+  /// Awards ///
+  const awards = data?.resumeItems?.awards ?? []
+  const awardsTitle = new Table({
+    width: { size: 100, type: WidthType.PERCENTAGE },
+    columnWidths: [9360],
+    layout: TableLayoutType.FIXED,
+    borders,
+    rows: [new TableRow({
+      children: [new TableCell({
+        width: { size: 9360, type: WidthType.DXA },
+        borders,
+        shading: { type: ShadingType.CLEAR, fill: 'D9D9D9' },
+        children: [new Paragraph({
+          children: [new TextRun({
+            text: 'Awards',
+            bold: true,
+            font: 'Times New Roman',
+            size: 24,
+          })],
+        })],
+      })],
+    })],
+  });
+  const awardsContext = awards.flatMap((item) => {
+    const award = item?.award ?? ''
+    
+    return new Paragraph({
+        bullet: {level: 0},
+        children: [
+            new TextRun({
+                text: award,
+                font: 'Times New Roman',
+                fontSize: 12
+            })
+        ]
+    })
+  })
+
+  /// References ///
+  const references = data?.resumeItems?.references ?? []
+  const referencesTitle = new Table({
+    width: { size: 100, type: WidthType.PERCENTAGE },
+    columnWidths: [9360],
+    layout: TableLayoutType.FIXED,
+    borders,
+    rows: [new TableRow({
+      children: [new TableCell({
+        width: { size: 9360, type: WidthType.DXA },
+        borders,
+        shading: { type: ShadingType.CLEAR, fill: 'D9D9D9' },
+        children: [new Paragraph({
+          children: [new TextRun({
+            text: 'References',
+            bold: true,
+            font: 'Times New Roman',
+            size: 24,
+          })],
+        })],
+      })],
+    })],
+  });
+  console.log(references)
+const referenceContent = references.flatMap((item) => {
+  const name = [item?.firstName, item?.lastName].filter(Boolean).join(' ')
+  const jobTitle = item?.jobTitle ?? ''
+  const email = item?.email ?? ''
+  const phone = item?.phoneNumber ?? ''
+  const relationship = item?.relationship ?? ''
+
+        const finalResult = []
+
+        finalResult.push(
+            new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: name, bold: true, font: 'Times New Roman', size: 20
+                            })
+                        ]
+                    }),
+                new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: jobTitle, italics: true, font: 'Times New Roman', size: 20
+                            })
+                        ]
+                    }),
+                new Paragraph({
+                    children: [
+                        new TextRun({
+                            text: phone, font: 'Times New Roman', size: 20
+                        })
+                    ]
+                }),
+                new Paragraph({
+                    children: [
+                        new TextRun({
+                            text: email, font: 'Times New Roman', size: 20
+                        })
+                    ]
+                }),
+                new Paragraph({
+                    children: [
+                        new TextRun({
+                            text: "Relationship: " + relationship, font: 'Times New Roman', size: 20
+                        })
+                    ]
+                }),
+                blankLine())
+        return finalResult
+  })
+
+
   /// Document Creation ///
   const heading = new Table({
     width: { size: 100, type: WidthType.PERCENTAGE },
@@ -392,32 +504,64 @@ export default function GenerateDocument(data) {
       ],
     })],
 });
+    console.log(education, summary, workHistory, references, awards, skills)
+    const finalPrintout = []
+    if (summary !== '') {
+        finalPrintout.push(
+            blankLine(),
+            summaryTitle, 
+            blankLine(),
+            SummaryParagraph
+        )
+    }
+    if (education.length > 0) {
+        finalPrintout.push(
+            blankLine(),
+            educationTitle,
+            blankLine(),
+            ...educationContent
+        )
+    }
+    if (workHistory.length > 0) {
+        finalPrintout.push(
+            blankLine(),
+            workHistoryTitle, 
+            blankLine(),
+            ...workHistoryContent
+        )
+    }
+    if (skills.length > 0) {
+        finalPrintout.push(
+            blankLine(),
+            skillsTitle,
+            blankLine(),
+            skillContent
+        )
+    }
+    if (awards.length > 0) {
+        finalPrintout.push(
+            blankLine(),
+            awardsTitle,
+            blankLine(),
+            ...awardsContext
+        )
+    }
+    if (references.length > 0) {
+        finalPrintout.push(
+            pageBreak(),
+            blankLine(),
+            referencesTitle,
+            blankLine(),
+            ...referenceContent
+        ) 
+    }
 
   const doc = new Document({
     sections: [{
       headers: {
         default: new Header({ children: [heading] }),
       },
-      children: [
-        blankLine(),
-        summaryTitle, 
-        blankLine(),
-        SummaryParagraph, 
-        blankLine(),
-        educationTitle,
-        blankLine(),
-        ...educationContent,
-        blankLine(),
-        workHistoryTitle, 
-        blankLine(),
-        ...workHistoryContent,
-        blankLine(),
-        skillsTitle,
-        blankLine(),
-        skillContent,
-        pageBreak(),
-        skillsTitle
-    ],
+      children: finalPrintout,
     }],
   });
 

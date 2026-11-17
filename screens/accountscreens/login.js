@@ -62,15 +62,15 @@ export default function LoginScreen() {
             }
     
             if (dataResult.Resumes == false) {
-              setResumes({})
+              setResumes([])
             } else {
               setResumes(dataResult.Resumes)
             }
     
-            if (dataResult.JobListings == false) {
-              setJobListings({})
+            if (dataResult.jobListings == false) {
+              setJobListings([])
             } else {
-              setJobListings(dataResult.JobListings)
+              setJobListings(dataResult.jobListings)
             }
           }
         }

@@ -12,6 +12,7 @@ import AwardsDisplay from "../../../assets/components/resumeCreator/selection/aw
 
 export default function EditResumeScreen({ route }) {
 
+
     const entry = route?.params?? {}
     const {personalInfo, resumeItems, setDataInfo, resumes, setResumes, updateDatabase} = useContext(userContext)
     // Navigation
@@ -25,13 +26,16 @@ export default function EditResumeScreen({ route }) {
     
 
     // Page 0: Basic Checks
-    const [jobTitle, setJobTitle] = useState(entry.details.jobTitle)
-    const [company, setCompany] = useState(entry.details.company ?? '')
+    const details = entry.details ?? {}
+    const resumeItemsForEntry = entry.resumeItems ?? {}
 
-    const [firstName, setFirstName] = useState(entry.details.firstName)
-    const [lastName, setLastName] = useState(entry.details.lastName)
-    const [linkedin, setLinkedin] = useState(entry.details.linkedin)
-    const [phonenumber, setPhoneNumber] = useState(entry.details.phonenumber)
+    const [jobTitle, setJobTitle] = useState(details.jobTitle ?? '')
+    const [company, setCompany] = useState(details.company ?? '')
+
+    const [firstName, setFirstName] = useState(details.firstName ?? '')
+    const [lastName, setLastName] = useState(details.lastName ?? '')
+    const [linkedin, setLinkedin] = useState(details.linkedin ?? details.LinkedIn ?? '')
+    const [phonenumber, setPhoneNumber] = useState(details.phonenumber ?? details.phoneNumber ?? '')
 
     const validJobTitle = jobTitle.length > 0
     const validFirst = firstName.length > 0
@@ -39,25 +43,25 @@ export default function EditResumeScreen({ route }) {
     
     const firstPagePassing = validJobTitle && validFirst && validLast
     // Page 0: Select History and Education
-    const [history, setHistory] = useState(entry.resumeItems.history)
-    const [education, setEducation] = useState(entry.resumeItems.education ?? [])
+    const [history, setHistory] = useState(resumeItemsForEntry.history ?? [])
+    const [education, setEducation] = useState(resumeItemsForEntry.education ?? [])
 
     const validHistory = history.length > 0
     const validEducation = education.length > 0
 
     const secondPagePassing = validHistory && validEducation
     // Page 1: Select Skills
-    const [skills, setSkills] = useState(entry.resumeItems.skills)
-    const [awards, setAwards] = useState(entry.resumeItems.awards)
+    const [skills, setSkills] = useState(resumeItemsForEntry.skills ?? [])
+    const [awards, setAwards] = useState(resumeItemsForEntry.awards ?? [])
 
     const thirdPagePassing = skills.length > 0
     
     // Page 2: Select References
-    const [references, setReferences] = useState(entry.resumeItems.references)
+    const [references, setReferences] = useState(resumeItemsForEntry.references ?? [])
 
     const forthPagePassing = references.length > 0
     // Page 3: Write Summary
-    const [summary, setSummary] = useState(entry.details.summary)
+    const [summary, setSummary] = useState(details.summary ?? '')
 
     const fifthPagePassing = summary.length > 10
     // Page 4: Finalize Resume
@@ -112,6 +116,12 @@ export default function EditResumeScreen({ route }) {
 
     function updateReferences(data) {
         setReferences((previous) => previous.some((item) => item.id === data.id)
+        ? previous.filiter((item) => item.id !== data.id)
+        : [...previous, data])
+    }
+
+    function updateAwards(data) {
+        setAwards((previous) => previous.some((item) => item.id === data.id)
         ? previous.filiter((item) => item.id !== data.id)
         : [...previous, data])
     }
@@ -244,7 +254,7 @@ export default function EditResumeScreen({ route }) {
             <Text style={styles.ListLabels}>(Optional) Add a few awards to spice it up</Text>
             <View style={styles.MainFlatList}>
                 <FlatList data={resumeItems.awards} keyExtractor={(item) => (String(item.id))} renderItem={({item}) => (
-                    <AwardsDisplay {...item} isSelected={references.some((selected) => selected.id === item.id)} onSelect={updateReferences}/> 
+                    <AwardsDisplay {...item} isSelected={awards.some((selected) => selected.id === item.id)} onSelect={updateAwards}/> 
                 )}/>
             </View>
         </View>

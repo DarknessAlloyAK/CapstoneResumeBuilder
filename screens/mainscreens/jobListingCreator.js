@@ -3,18 +3,17 @@ import { View, FlatList, Text, Pressable, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useContext, useState } from "react";
 import {userContext} from "../../functions/context/userContext";
-import ResumeDisplay from "../../assets/components/resumeCreator/resume";
-import GenerateDocument from "../../functions/exports/resumeDocCreator";
+import JobListingDisplay from "../../assets/components/jobListing/joblisting";
 // Shows all resumes that the user created, and allows for more to be created.
 
 export default function JobListingCreator() {
 
-    const {resumes, setResumes, updateDatabase} = useContext(userContext)
+    const {jobListings, setJobListings, updateDatabase} = useContext(userContext)
 
 
     async function deleteJobListing(id) {
-        setResumes(resumes.filter((item) => item.details.id !== id))
-        updateDatabase({path: 'Resumes', data: resumes.filter((item) => item.details.id !== id)})
+        setJobListings(resumes.filter((item) => item.id !== id))
+        updateDatabase({path: 'jobListings', data: jobListings.filter((item) => item.id !== id)})
     } 
 
     // Navigation
@@ -26,14 +25,14 @@ export default function JobListingCreator() {
 
     return (<View style={styles.background}>
         <View style={styles.mainSection}>
-            <Text style={styles.title}>Resumes</Text>
-            <FlatList style={styles.MainFlatList} data={resumes} keyExtractor={(item) => String(item.details.id)} renderItem={({item}) => (
-                <ResumeDisplay item={item}
-                onEdit={() => navigation.navigate('editresume', item)} 
-                onDelete={() => deleteJobListing(item.details.id)}/>
+            <Text style={styles.title}>Job Listing</Text>
+            <FlatList style={styles.MainFlatList} data={jobListings} keyExtractor={(item) => String(item.id)} renderItem={({item}) => (
+                <JobListingDisplay item={item}
+                onEdit={() => navigation.navigate('editlisting', item)} 
+                onDelete={() => deleteJobListing(item.id)}/>
             )
             }/>
-            <Pressable style={styles.AddButton} onPress={() => navigate("createresume")}>
+            <Pressable style={styles.AddButton} onPress={() => navigate("createjoblisting")}>
                 <Text style={styles.ButtonText}>+ Add Resume</Text>
             </Pressable>
         </View>
